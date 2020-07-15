@@ -104,4 +104,37 @@ ALTER TABLE ONLY "public"."dogs"
     ADD CONSTRAINT "dogs_owner_id_fkey" FOREIGN KEY ("owner_id") REFERENCES "public"."users"("id");
 
 
+CREATE TABLE "public"."toys" (
+    "id" integer NOT NULL,
+    "name" character varying(255),
+    "dog_owner_id" integer NOT NULL,
+    "created_at" timestamp without time zone,
+    "updated_at" timestamp without time zone
+);
+
+
+
+CREATE SEQUENCE "public"."toys_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE "public"."toys_id_seq" OWNED BY "public"."toys"."id";
+
+
+ALTER TABLE ONLY "public"."toys" ALTER COLUMN "id" SET DEFAULT "nextval"('"public"."toys_id_seq"'::"regclass");
+
+ALTER TABLE ONLY "public"."toys"
+    ADD CONSTRAINT "toys_pkey" PRIMARY KEY ("id");
+
+CREATE INDEX "ix_toys_id" ON "public"."toys" USING "btree" ("id");
+
+ALTER TABLE ONLY "public"."toys"
+    ADD CONSTRAINT "toys_dog_owner_id_fkey" FOREIGN KEY ("dog_owner_id") REFERENCES "public"."dogs"("id");
+
+
 
